@@ -1,11 +1,14 @@
 package com.springpractice.recipedemo.services;
 
 import com.springpractice.recipedemo.commands.IngredientCommand;
+import com.springpractice.recipedemo.converters.IngredientCommandToIngredient;
 import com.springpractice.recipedemo.converters.IngredientToIngredientCommand;
+import com.springpractice.recipedemo.converters.UnitOfMeasureCommandToUnitOfMeasure;
 import com.springpractice.recipedemo.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.springpractice.recipedemo.domain.Ingredient;
 import com.springpractice.recipedemo.domain.Recipe;
 import com.springpractice.recipedemo.repositories.RecipeRepository;
+import com.springpractice.recipedemo.repositories.UnitOfMeasureRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,19 +22,27 @@ import static org.mockito.Mockito.*;
 
 public class IngredientServiceImplTest {
     private final IngredientToIngredientCommand ingredientToIngredientCommand;
+    private final IngredientCommandToIngredient ingredientCommandToIngredient;
     IngredientService ingredientService;
     @Mock
     RecipeRepository recipeRepository;
+    @Mock
+    UnitOfMeasureRepository unitOfMeasureRepository;
 
     public IngredientServiceImplTest() {
         this.ingredientToIngredientCommand = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
+        this.ingredientCommandToIngredient = new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
     }
 
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
 
-        ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, recipeRepository);
+        ingredientService = new IngredientServiceImpl(
+                ingredientToIngredientCommand,
+                ingredientCommandToIngredient,
+                recipeRepository,
+                unitOfMeasureRepository);
     }
 
     @Test
