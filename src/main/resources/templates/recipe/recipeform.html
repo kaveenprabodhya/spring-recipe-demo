@@ -9,7 +9,7 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 offset-md-3">
-            <form th:object="${recipe}" th:action="@{/recipe/}" method="post">
+            <form th:object="${recipe}" th:action="@{/recipe/new}" method="post">
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                     <p>Please Correct Errors Below</p>
                 </div>
@@ -145,8 +145,14 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-12 form-group">
+                                <div class="col-md-12 form-group" th:class="${#fields.hasErrors('directions')}
+                                ? 'col-md-12 form-group has-error' : 'col-md-12 form-group'">
                                     <textarea class="form-control" rows="6" th:field="*{directions}"></textarea>
+                                    <span class="help-block" th:if="${#fields.hasErrors('directions')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('directions')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
                                 </div>
                             </div>
                         </div>
